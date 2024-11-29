@@ -1,38 +1,380 @@
 .App {
+  display: flex;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.environment-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.environment-selector button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background: #333333;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  color: #ffffff;
+}
+
+.environment-selector button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.environment-selector button.active {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+.animation-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.animation-controls button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  background-color: #333333;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #ffffff;
+}
+
+.animation-controls button:hover {
+  background-color: #444444;
+}
+
+.animation-controls button.active {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.model-list {
+  width: 250px;
+  padding: 20px;
+  background-color: #2a2a2a;
+  border-right: 1px solid #3a3a3a;
+  overflow-y: auto;
+}
+
+.model-list-header {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3a3a3a;
+}
+
+.model-list button {
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background: #333333;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  color: #ffffff;
+}
+
+.model-list button:hover {
+  background: #444444;
+  transform: translateX(2px);
+}
+
+.model-list button.active {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+.viewer-container {
+  flex: 1;
+  position: relative;
+  background-color: #1a1a1a;
+  transition: all 0.3s ease;
+}
+
+.canvas-container {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-container.drag-active {
+  background: #3a3a3a;
+}
+
+.viewer-header {
+  padding: 15px;
   text-align: center;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.1em;
+  color: #ffffff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.upload-icon {
+  font-size: 1.2em;
+  color: #4a4a4a;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.arrow-icon {
+  font-size: 1.2em;
+  color: #4a4a4a;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.upload-icon-large {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(74, 144, 226, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.drop-message {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.2em;
+}
+
+.drop-message {
+  padding: 20px 40px;
+  background: #333333;
+  border-radius: 10px;
+  font-size: 20px;
+  color: #4a4a4a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.empty-state p {
+  margin: 10px 0;
+  font-size: 16px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.animation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #3a3a3a;
+  background-color: #333333;
+}
+
+.animation-title {
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.1em;
+}
+
+.loop-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  background-color: #333333;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9em;
+  color: #ffffff;
+}
+
+.loop-button:hover {
+  background-color: #444444;
+}
+
+.loop-button.active {
+  background-color: #4a4a4a;
+  color: #ffffff;
+  border-color: #4a4a4a;
+}
+
+.animation-items {
+  padding: 8px;
+}
+
+.animation-items button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  margin: 4px 0;
+  border: none;
+  background-color: #333333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.95em;
+  color: #ffffff;
+}
+
+.animation-items button:hover {
+  background-color: #444444;
+}
+
+.animation-items button.active {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
+.animation-icon {
+  margin-right: 8px;
+  width: 16px;
+}
+
+.dropzone {
+  border: 2px dashed #4a4a4a;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.dropzone:hover, .dropzone.active {
+  border-color: #666666;
+  background-color: #333333;
+}
+
+.model-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.model-item {
+  padding: 10px;
+  background-color: #333333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.model-item:hover {
+  background-color: #444444;
+}
+
+.model-item.selected {
+  background-color: #4a4a4a;
+  border: 1px solid #666666;
+}
+
+.viewer {
+  flex: 1;
+  position: relative;
+  background-color: #1a1a1a;
+}
+
+.environment-list {
+  width: 250px;
+  padding: 20px;
+  background-color: #2a2a2a;
+  border-left: 1px solid #3a3a3a;
+  overflow-y: auto;
+}
+
+.environment-list h2 {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.environment-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.environment-item {
+  padding: 10px;
+  background-color: #333333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.environment-item:hover {
+  background-color: #444444;
+}
+
+.environment-item.selected {
+  background-color: #4a4a4a;
+  border: 1px solid #666666;
+}
+
+/* Canvas container styles */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
