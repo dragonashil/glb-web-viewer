@@ -37,14 +37,19 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
             <Model url={selectedModel.url} type={selectedModel.type} />
             <OrbitControls makeDefault />
             {showEnvironment && (
-              <Environment preset={environmentPreset as any} background />
+              <Environment
+                preset={environmentPreset as any}
+                background
+                blur={0}
+                resolution={2048}
+              />
             )}
-            <directionalLight 
+            <directionalLight
               position={[
                 lightPreset.directionalLight.position[0],
                 lightPreset.directionalLight.position[1],
                 lightPreset.directionalLight.position[2]
-              ]} 
+              ]}
               intensity={lightPreset.directionalLight.intensity}
               color={lightPreset.directionalLight.color}
               castShadow
@@ -67,9 +72,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
                 castShadow
               />
             ))}
-            <ambientLight 
-              intensity={lightPreset.ambientLight.intensity} 
-              color={lightPreset.ambientLight.color} 
+            <ambientLight
+              intensity={lightPreset.ambientLight.intensity}
+              color={lightPreset.ambientLight.color}
             />
           </>
         ) : (

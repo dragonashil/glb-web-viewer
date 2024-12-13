@@ -1,5 +1,4 @@
 import React from 'react';
-import { EnvironmentPreset } from '../../../types';
 import './EnvironmentSettings.css';
 
 interface EnvironmentSettingsProps {
@@ -7,37 +6,46 @@ interface EnvironmentSettingsProps {
   onPresetChange: (preset: string) => void;
 }
 
-const ENVIRONMENT_PRESETS: EnvironmentPreset[] = [
-  { name: 'Sunset', value: 'sunset', description: 'Warm evening lighting' },
-  { name: 'Dawn', value: 'dawn', description: 'Early morning atmosphere' },
-  { name: 'Night', value: 'night', description: 'Dark night environment' },
-  { name: 'Warehouse', value: 'warehouse', description: 'Indoor industrial setting' },
-  { name: 'Forest', value: 'forest', description: 'Natural forest lighting' },
-  { name: 'Apartment', value: 'apartment', description: 'Indoor residential lighting' },
-  { name: 'Studio', value: 'studio', description: 'Professional studio setup' },
-  { name: 'City', value: 'city', description: 'Urban environment' },
-  { name: 'Park', value: 'park', description: 'Outdoor park setting' },
-  { name: 'Lobby', value: 'lobby', description: 'Indoor lobby atmosphere' }
+interface EnvironmentPreset {
+  name: string;
+  description: string;
+}
+
+const environmentPresets: EnvironmentPreset[] = [
+  { name: 'sunset', description: 'Warm evening lighting with orange and purple hues' },
+  { name: 'dawn', description: 'Soft morning light with gentle blue tones' },
+  { name: 'warehouse', description: 'Industrial indoor lighting with ambient occlusion' },
+  { name: 'forest', description: 'Natural lighting filtered through trees' },
+  { name: 'apartment', description: 'Modern interior lighting with soft shadows' },
+  { name: 'studio', description: 'Clean, professional studio lighting setup' },
+  { name: 'city', description: 'Urban environment with building reflections' },
+  { name: 'park', description: 'Open outdoor lighting with natural ambiance' },
+  { name: 'lobby', description: 'Elegant indoor lighting with marble reflections' },
+  { name: 'night', description: 'Dark environment with moonlight and stars' }
 ];
 
 const EnvironmentSettings: React.FC<EnvironmentSettingsProps> = ({
   selectedPreset,
   onPresetChange
 }) => {
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <div className="environment-settings">
-      <h3>Environment Presets</h3>
-      <div className="environment-items">
-        {ENVIRONMENT_PRESETS.map((preset) => (
+      <div className="environment-header">
+        <h3>Environment Presets</h3>
+      </div>
+      <div className="preset-grid">
+        {environmentPresets.map((preset) => (
           <div
-            key={preset.value}
-            className={`environment-item ${selectedPreset === preset.value ? 'selected' : ''}`}
-            onClick={() => onPresetChange(preset.value)}
+            key={preset.name}
+            className={`preset-item ${selectedPreset === preset.name ? 'selected' : ''}`}
+            onClick={() => onPresetChange(preset.name)}
           >
-            <span>{preset.name}</span>
-            {preset.description && (
-              <small>{preset.description}</small>
-            )}
+            <h4>{capitalizeFirstLetter(preset.name)}</h4>
+            <p>{preset.description}</p>
           </div>
         ))}
       </div>
