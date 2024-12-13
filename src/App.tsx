@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [models, setModels] = useState<ModelInfo[]>([]);
   const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
   const [environmentPreset, setEnvironmentPreset] = useState('sunset');
-  const [lightPreset, setLightPreset] = useState<LightPreset>(defaultLightPreset);
+  const [selectedLightPreset, setSelectedLightPreset] = useState<LightPreset>(defaultLightPreset);
   const [showEnvironment, setShowEnvironment] = useState(true);
 
   const handleModelSelect = useCallback((model: ModelInfo) => {
@@ -42,15 +42,15 @@ const App: React.FC = () => {
       <ModelViewer
         selectedModel={selectedModel}
         environmentPreset={environmentPreset}
-        lightPreset={lightPreset}
+        lightPreset={selectedLightPreset}
         showEnvironment={showEnvironment}
       />
       <div className="right-sidebar">
         <SettingsPanel
           environmentPreset={environmentPreset}
           onEnvironmentChange={setEnvironmentPreset}
-          selectedLightPreset={lightPreset}
-          onLightPresetChange={setLightPreset}
+          selectedLightPreset={selectedLightPreset}
+          onLightPresetChange={setSelectedLightPreset}
           showEnvironment={showEnvironment}
           onShowEnvironmentChange={setShowEnvironment}
         />

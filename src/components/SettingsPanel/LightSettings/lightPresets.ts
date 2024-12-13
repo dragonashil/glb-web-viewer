@@ -1,32 +1,53 @@
 import { LightPreset } from '../../../types';
 
 export const defaultLightPreset: LightPreset = {
-  name: "Natural Day",
-  description: "Soft, natural daylight illumination with warm undertones",
-  gradient: ["#87CEEB", "#E0F7FA"],
-  intensity: 1.0,
+  name: "Environment Only",
+  description: "Use only environment lighting",
+  gradient: ["#000000", "#000000"],
+  intensity: 0,
   directionalLight: {
-    position: [5, 20, 2],
-    color: "#FFFFFF",
-    intensity: 3.0
+    position: [0, 0, 0],
+    color: "#000000",
+    intensity: 0
   },
   hemisphereLight: {
-    skyColor: "#87CEEB",
-    groundColor: "#E0F7FA",
-    intensity: 1.5
+    skyColor: "#000000",
+    groundColor: "#000000",
+    intensity: 0
   },
-  spotlights: [
-    { position: [10, 10, 10], color: "#FFFFFF", intensity: 0.8 },
-    { position: [-5, 8, -5], color: "#FFF8E1", intensity: 0.6 }
-  ],
+  spotlights: [],
   ambientLight: {
-    intensity: 0.6,
-    color: "#FFFFFF"
+    intensity: 0,
+    color: "#000000"
   }
 };
 
 export const lightPresets: LightPreset[] = [
   defaultLightPreset,
+  {
+    name: "Natural Day",
+    description: "Soft, natural daylight illumination with warm undertones",
+    gradient: ["#87CEEB", "#E0F7FA"],
+    intensity: 1.0,
+    directionalLight: {
+      position: [5, 20, 2],
+      color: "#FFFFFF",
+      intensity: 3.0
+    },
+    hemisphereLight: {
+      skyColor: "#87CEEB",
+      groundColor: "#E0F7FA",
+      intensity: 1.5
+    },
+    spotlights: [
+      { position: [10, 10, 10], color: "#FFFFFF", intensity: 0.8 },
+      { position: [-5, 8, -5], color: "#FFF8E1", intensity: 0.6 }
+    ],
+    ambientLight: {
+      intensity: 0.6,
+      color: "#FFFFFF"
+    }
+  },
   {
     name: "Neon Night",
     description: "Vibrant cyberpunk-inspired lighting with neon accents",
