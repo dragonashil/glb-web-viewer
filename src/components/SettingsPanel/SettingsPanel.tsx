@@ -23,7 +23,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   showEnvironment,
   onShowEnvironmentChange
 }) => {
-  const [activeTab, setActiveTab] = useState<'environment' | 'light'>('light');
+  const [activeTab, setActiveTab] = useState<'environment' | 'light'>('environment');
 
   return (
     <div className="settings-panel">
