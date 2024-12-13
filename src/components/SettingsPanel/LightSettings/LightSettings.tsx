@@ -1,86 +1,12 @@
 import React, { useState } from 'react';
 import { LightPreset } from '../../../types';
+import { lightPresets, generateRandomPreset } from './lightPresets';
 import './LightSettings.css';
 
 interface LightSettingsProps {
   selectedPreset: LightPreset;
   onPresetChange: (preset: LightPreset) => void;
 }
-
-const LIGHT_PRESETS: LightPreset[] = [
-  {
-    name: "Natural Day",
-    description: "Soft, natural daylight illumination",
-    gradient: ["#87CEEB", "#E0F7FA"],
-    intensity: 1.0,
-    directionalLight: {
-      position: [5, 20, 2],
-      color: "#FFFFFF",
-      intensity: 3.0
-    },
-    hemisphereLight: {
-      skyColor: "#87CEEB",
-      groundColor: "#E0F7FA",
-      intensity: 1.5
-    },
-    spotlights: [
-      { position: [10, 10, 10], color: "#FFFFFF", intensity: 0.8 },
-      { position: [-5, 8, -5], color: "#FFF8E1", intensity: 0.6 }
-    ],
-    ambientLight: {
-      intensity: 0.6,
-      color: "#FFFFFF"
-    }
-  },
-  {
-    name: "Neon Night",
-    description: "Vibrant neon lighting for dramatic effect",
-    gradient: ["#FF1493", "#00FFFF"],
-    intensity: 1.2,
-    directionalLight: {
-      position: [0, 10, 0],
-      color: "#FF1493",
-      intensity: 2.0
-    },
-    hemisphereLight: {
-      skyColor: "#FF1493",
-      groundColor: "#00FFFF",
-      intensity: 1.0
-    },
-    spotlights: [
-      { position: [5, 5, 5], color: "#FF1493", intensity: 1.0 },
-      { position: [-5, 5, -5], color: "#00FFFF", intensity: 1.0 }
-    ],
-    ambientLight: {
-      intensity: 0.4,
-      color: "#FF69B4"
-    }
-  },
-  {
-    name: "Cyberpunk",
-    description: "Futuristic cyberpunk-style lighting",
-    gradient: ["#00FF9F", "#FF00FF"],
-    intensity: 1.5,
-    directionalLight: {
-      position: [3, 15, 3],
-      color: "#00FF9F",
-      intensity: 2.5
-    },
-    hemisphereLight: {
-      skyColor: "#00FF9F",
-      groundColor: "#FF00FF",
-      intensity: 1.2
-    },
-    spotlights: [
-      { position: [8, 8, 8], color: "#00FF9F", intensity: 1.2 },
-      { position: [-8, 8, -8], color: "#FF00FF", intensity: 1.2 }
-    ],
-    ambientLight: {
-      intensity: 0.5,
-      color: "#00FF9F"
-    }
-  }
-];
 
 const LightSettings: React.FC<LightSettingsProps> = ({
   selectedPreset,
@@ -98,43 +24,66 @@ const LightSettings: React.FC<LightSettingsProps> = ({
       </div>
 
       <div className="light-items">
-        {LIGHT_PRESETS.map((preset) => (
+        {lightPresets.map((preset) => (
           <div
             key={preset.name}
             className={`light-item ${selectedPreset.name === preset.name ? 'selected' : ''}`}
             onClick={() => onPresetChange(preset)}
-            data-preset={preset.name.toLowerCase().replace(' ', '-')}
+            style={{
+              background: `linear-gradient(to right, ${preset.gradient[0]}, ${preset.gradient[1]})`
+            }}
+            data-preset={preset.name.toLowerCase().replace(/\s+/g, '-')}
           >
             <span>{preset.name}</span>
           </div>
         ))}
+        <div
+          className={`light-item ${selectedPreset.name === 'Random Mix' ? 'selected' : ''}`}
+          onClick={() => {
+            const newPreset = generateRandomPreset();
+            onPresetChange(newPreset);
+            setShowInfo(true);
+          }}
+          data-preset="random"
+          style={{
+            background: 'linear-gradient(to right, var(--accent-color), var(--primary-color))'
+          }}
+        >
+          <span>Random Mix</span>
+        </div>
       </div>
 
-      {showInfo && selectedPreset && (
+      {showInfo && (
         <div className="light-info-section">
-          <h4>Light Configuration</h4>
+          <h4>Light Information - {selectedPreset.name}</h4>
+          <p className="preset-description">{selectedPreset.description}</p>
+          
           <div className="light-info">
             <h5>Directional Light</h5>
-            <p>Position: [{selectedPreset.directionalLight.position.join(', ')}]</p>
             <p>Color: {selectedPreset.directionalLight.color}</p>
             <p>Intensity: {selectedPreset.directionalLight.intensity}</p>
+            <p>Position: [{selectedPreset.directionalLight.position.join(', ')}]</p>
           </div>
+
           <div className="light-info">
             <h5>Hemisphere Light</h5>
             <p>Sky Color: {selectedPreset.hemisphereLight.skyColor}</p>
             <p>Ground Color: {selectedPreset.hemisphereLight.groundColor}</p>
             <p>Intensity: {selectedPreset.hemisphereLight.intensity}</p>
           </div>
+
           <div className="light-info">
             <h5>Spotlights</h5>
-            {selectedPreset.spotlights.map((spotlight, index) => (
-              <div key={index}>
-                <p>Position: [{spotlight.position.join(', ')}]</p>
-                <p>Color: {spotlight.color}</p>
-                <p>Intensity: {spotlight.intensity}</p>
+            {selectedPreset.spotlights.map((light, index) => (
+              <div key={index} className="spotlight-info">
+                <p>Spotlight {index + 1}</p>
+                <p>Color: {light.color}</p>
+                <p>Intensity: {light.intensity}</p>
+                <p>Position: [{light.position.join(', ')}]</p>
               </div>
             ))}
           </div>
+
           <div className="light-info">
             <h5>Ambient Light</h5>
             <p>Color: {selectedPreset.ambientLight.color}</p>

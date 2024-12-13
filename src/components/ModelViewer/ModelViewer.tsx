@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import { OrbitControls, Environment, Html } from '@react-three/drei';
 import { Model } from './Model';
 import { ModelInfo, LightPreset } from '../../types';
 import './ModelViewer.css';
@@ -69,9 +69,11 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
             />
           </>
         ) : (
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white' }}>
-            No model selected
-          </div>
+          <Html center>
+            <div className="no-model-message">
+              No model selected
+            </div>
+          </Html>
         )}
       </Canvas>
     </div>

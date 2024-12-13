@@ -3,12 +3,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .light-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .light-header h3 {
@@ -43,13 +46,21 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+}
+
+.light-item span {
   color: white;
   text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  background-size: 200% 200%;
-  animation: gradientShift 5s ease infinite;
+  font-weight: 500;
+  z-index: 1;
+  letter-spacing: 0.5px;
 }
 
 .light-item:hover {
@@ -63,60 +74,112 @@
   box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
 }
 
-/* Natural Day Preset */
-.light-item[data-preset="natural-day"] {
-  background: linear-gradient(135deg, #87CEEB, #E0F7FA);
-}
-
-/* Neon Night Preset */
-.light-item[data-preset="neon-night"] {
-  background: linear-gradient(135deg, #FF1493, #00FFFF);
-}
-
-/* Cyberpunk Preset */
-.light-item[data-preset="cyberpunk"] {
-  background: linear-gradient(135deg, #00FF9F, #FF00FF);
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 .light-info-section {
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background: var(--elevated-dark);
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  overflow-y: auto;
 }
 
 .light-info-section h4 {
   color: var(--primary-color);
   margin: 0 0 1rem 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
-.light-info-section h5 {
+.preset-description {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.light-info {
+  margin-bottom: 1.5rem;
+}
+
+.light-info:last-child {
+  margin-bottom: 0;
+}
+
+.light-info h5 {
   color: var(--primary-light);
   margin: 1rem 0 0.5rem 0;
   font-size: 0.9rem;
   font-weight: 500;
 }
 
-.light-info-section p {
+.light-info p {
   margin: 0.25rem 0;
   font-size: 0.85rem;
   color: #ccc;
 }
 
-.light-info {
-  margin-bottom: 1rem;
+.spotlight-info {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--primary-dark);
 }
 
-.light-info:last-child {
-  margin-bottom: 0;
+.spotlight-info p:first-child {
+  color: var(--primary-light);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Natural Day Preset */
+.light-item[data-preset="natural-day"] {
+  background: linear-gradient(to right, #87CEEB, #E0F7FA);
+}
+
+/* Neon Night Preset */
+.light-item[data-preset="neon-night"] {
+  background: linear-gradient(to right, #FF1493, #00FFFF);
+}
+
+/* Cyberpunk Preset */
+.light-item[data-preset="cyberpunk"] {
+  background: linear-gradient(to right, #00FF9F, #FF00FF);
+}
+
+/* Sunset Warmth Preset */
+.light-item[data-preset="sunset-warmth"] {
+  background: linear-gradient(to right, #FF7F50, #FFD700);
+}
+
+/* Arctic Aurora Preset */
+.light-item[data-preset="arctic-aurora"] {
+  background: linear-gradient(to right, #000B3B, #003366);
+}
+
+/* Studio Perfect Preset */
+.light-item[data-preset="studio-perfect"] {
+  background: linear-gradient(to right, #2C3E50, #34495E);
+}
+
+/* Mystic Forest Preset */
+.light-item[data-preset="mystic-forest"] {
+  background: linear-gradient(to right, #1B4F3C, #2E8B57);
+}
+
+/* Desert Sun Preset */
+.light-item[data-preset="desert-sun"] {
+  background: linear-gradient(to right, #FFB74D, #FFE0B2);
+}
+
+/* Horror Scene Preset */
+.light-item[data-preset="horror-scene"] {
+  background: linear-gradient(to right, #1A1A1A, #2C1810);
+}
+
+/* Underwater Preset */
+.light-item[data-preset="underwater"] {
+  background: linear-gradient(to right, #006994, #00BFFF);
+}
+
+/* Random Mix Preset */
+.light-item[data-preset="random"] {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
 }
