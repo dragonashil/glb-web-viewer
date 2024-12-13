@@ -1,0 +1,122 @@
+.light-settings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.light-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.light-header h3 {
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 500;
+}
+
+.info-button {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info-button:hover {
+  background: rgba(0, 188, 212, 0.1);
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+}
+
+.light-items {
+  display: grid;
+  gap: 12px;
+}
+
+.light-item {
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.light-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-color: var(--primary-color);
+}
+
+.light-item.selected {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
+}
+
+/* Natural Day Preset */
+.light-item[data-preset="natural-day"] {
+  background: linear-gradient(135deg, #87CEEB, #E0F7FA);
+}
+
+/* Neon Night Preset */
+.light-item[data-preset="neon-night"] {
+  background: linear-gradient(135deg, #FF1493, #00FFFF);
+}
+
+/* Cyberpunk Preset */
+.light-item[data-preset="cyberpunk"] {
+  background: linear-gradient(135deg, #00FF9F, #FF00FF);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.light-info-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--elevated-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow-y: auto;
+}
+
+.light-info-section h4 {
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.light-info-section h5 {
+  color: var(--primary-light);
+  margin: 1rem 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.light-info-section p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.light-info {
+  margin-bottom: 1rem;
+}
+
+.light-info:last-child {
+  margin-bottom: 0;
+}
