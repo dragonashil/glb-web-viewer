@@ -39,7 +39,12 @@ const ModelList: React.FC<ModelListProps> = ({
       'model/gltf-binary': ['.glb'],
       'model/gltf+json': ['.gltf'],
       'model/obj': ['.obj'],
-      'model/fbx': ['.fbx']
+      'model/fbx': ['.fbx'],
+      'model/collada': ['.dae'],
+      'model/stl': ['.stl'],
+      'model/ply': ['.ply'],
+      'model/usdz': ['.usdz'],
+      'model/3ds': ['.3ds']
     }
   });
 
@@ -50,7 +55,7 @@ const ModelList: React.FC<ModelListProps> = ({
         <input {...getInputProps()} />
         <FontAwesomeIcon icon={faFileUpload} className="upload-icon" />
         <p>Drop 3D models here or click to select</p>
-        <small>Supported: GLB, GLTF, OBJ, FBX</small>
+        <small>Supported: GLB, GLTF, OBJ, FBX, DAE, STL, PLY, USDZ, 3DS</small>
       </div>
       <div className="model-items">
         {models.map((model, index) => (
