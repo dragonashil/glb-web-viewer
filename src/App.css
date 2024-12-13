@@ -147,7 +147,17 @@ body {
 
 .light-settings, .environment-settings {
   flex: 1;
+  overflow: hidden;
+}
+
+.light-info-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--elevated-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
   overflow-y: auto;
+  max-height: 500px;
 }
 
 .section-header {
@@ -252,32 +262,60 @@ body {
   box-shadow: 0 0 20px rgba(0, 188, 212, 0.15);
 }
 
+.preset-info-container {
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--elevated-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
 .preset-info {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(30, 30, 30, 0.95);
-  padding: 20px;
-  border-radius: 12px;
-  color: #fff;
-  max-width: 300px;
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--primary-color);
-  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.2);
+  padding: 1rem;
 }
 
 .preset-info h3 {
   color: var(--primary-color);
-  margin: 0 0 15px 0;
+  margin: 0 0 1rem 0;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
 
-.light-info h4 {
-  color: var(--primary-light);
-  margin: 0 0 8px 0;
-  font-size: 14px;
+.light-info-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--elevated-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.light-info-section h4 {
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
   font-weight: 500;
+}
+
+.light-info-section h5 {
+  color: var(--primary-light);
+  margin: 1rem 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.light-info-section p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.light-info {
+  margin-bottom: 1rem;
+}
+
+.light-info:last-child {
+  margin-bottom: 0;
 }
 
 .input[type="range"] {
@@ -576,7 +614,7 @@ canvas {
 }
 
 .settings-panel {
-  width: 250px;
+  width: 350px;
   padding: 20px;
   background-color: var(--surface-dark);
   border-left: 1px solid var(--border-color);
@@ -929,4 +967,65 @@ canvas {
 /* Random Preset */
 .preset-item[data-preset="random"]::before {
   background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+}
+
+.light-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.info-button {
+  padding: 5px 10px;
+  background-color: #4a5568;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.info-button:hover {
+  background-color: #2d3748;
+}
+
+.preset-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #4a5568;
+}
+
+.light-info {
+  margin-bottom: 1.5rem;
+}
+
+.light-info h4 {
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+}
+
+.light-info p {
+  margin: 0.25rem 0;
+  color: #4a5568;
 }

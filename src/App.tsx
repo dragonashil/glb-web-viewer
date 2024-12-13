@@ -327,30 +327,24 @@ function generateRandomPreset(): LightPreset {
   };
 }
 
-interface PresetInfoProps {
-  preset: LightPreset;
-  setShowPresetInfo: (show: boolean) => void;
-}
-
-function PresetInfo({ preset, setShowPresetInfo }: PresetInfoProps) {
+function PresetInfo({ preset }: { preset: LightPreset }) {
   return (
-    <div className="preset-info">
-      <button className="close-button" onClick={() => setShowPresetInfo(false)}>×</button>
-      <h3>{preset.name}</h3>
+    <div className="light-info-section">
+      <h4>Light Information - {preset.name}</h4>
       <div className="light-info">
-        <h4>Directional Light</h4>
+        <h5>Directional Light</h5>
         <p>Color: {preset.directionalLight.color}</p>
         <p>Intensity: {preset.directionalLight.intensity}</p>
         <p>Position: [{preset.directionalLight.position.join(', ')}]</p>
       </div>
       <div className="light-info">
-        <h4>Hemisphere Light</h4>
+        <h5>Hemisphere Light</h5>
         <p>Sky Color: {preset.hemisphereLight.skyColor}</p>
         <p>Ground Color: {preset.hemisphereLight.groundColor}</p>
         <p>Intensity: {preset.hemisphereLight.intensity}</p>
       </div>
       <div className="light-info">
-        <h4>Spotlights</h4>
+        <h5>Spotlights</h5>
         {preset.spotlights.map((light, index) => (
           <div key={index}>
             <p>Color: {light.color}</p>
@@ -360,7 +354,7 @@ function PresetInfo({ preset, setShowPresetInfo }: PresetInfoProps) {
         ))}
       </div>
       <div className="light-info">
-        <h4>Ambient Light</h4>
+        <h5>Ambient Light</h5>
         <p>Color: {preset.ambientLight.color}</p>
         <p>Intensity: {preset.ambientLight.intensity}</p>
       </div>
@@ -449,7 +443,6 @@ function App() {
             )}
           </Suspense>
         </Canvas>
-        {showPresetInfo && <PresetInfo preset={selectedLight} setShowPresetInfo={setShowPresetInfo} />}
       </div>
 
       <div className="settings-panel">
@@ -541,16 +534,17 @@ function App() {
           </div>
         ) : (
           <div className="light-settings">
-            <div className="section-header">
+            <div className="light-header">
               <h3>Light Presets</h3>
-              <button
-                onClick={() => setShowPresetInfo(!showPresetInfo)}
+              <button 
                 className="info-button"
+                onClick={() => setShowPresetInfo(!showPresetInfo)}
+                title="Show Light Preset Info"
               >
-                {!showPresetInfo ? 'ℹ️ Show Info' : 'ℹ️ Hide Info'}
+                {showPresetInfo ? 'Hide Info' : 'Show Info'}
               </button>
             </div>
-            <div className="light-items">
+            <div className="preset-buttons">
               {lightPresets.map((preset, index) => (
                 <div
                   key={index}
@@ -576,6 +570,7 @@ function App() {
                 <span>Random Mix</span>
               </div>
             </div>
+            {showPresetInfo && <PresetInfo preset={selectedLight} />}
           </div>
         )}
       </div>
