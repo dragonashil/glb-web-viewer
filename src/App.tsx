@@ -29,6 +29,14 @@ const App: React.FC = () => {
     }
   }, [models, selectedModel]);
 
+  const handleModelDelete = useCallback((modelToDelete: ModelInfo) => {
+    if (selectedModel?.url === modelToDelete.url) {
+      setSelectedModel(null);
+    }
+    setModels(prevModels => prevModels.filter(model => model.url !== modelToDelete.url));
+    URL.revokeObjectURL(modelToDelete.url);
+  }, [selectedModel]);
+
   return (
     <div className="app">
       <div className="left-sidebar">
@@ -37,6 +45,7 @@ const App: React.FC = () => {
           selectedModel={selectedModel}
           onModelSelect={handleModelSelect}
           onModelsAdd={handleModelsAdd}
+          onModelDelete={handleModelDelete}
         />
       </div>
       <ModelViewer

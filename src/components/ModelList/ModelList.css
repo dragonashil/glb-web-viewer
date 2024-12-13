@@ -50,15 +50,16 @@
 }
 
 .model-item {
-  padding: 12px;
-  background: var(--elevated-dark);
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  background: var(--elevated-dark);
   border: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .model-item:hover {
@@ -82,4 +83,26 @@
 .model-item small {
   color: #888;
   margin-left: 8px;
+}
+
+.model-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #ff4444;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.delete-button:hover {
+  opacity: 1;
 }
