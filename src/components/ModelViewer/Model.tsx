@@ -1,96 +1,64 @@
-import React, { Suspense, useEffect } from 'react';
-import { useLoader } from '@react-three/fiber';
+import React, { useEffect, useRef } from 'react';
+import { useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
-import { Center } from '@react-three/drei';
+import { Group } from 'three';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 interface ModelProps {
   url: string;
-  type?: string;
+  type: string;
 }
 
-const GLTFModel: React.FC<ModelProps> = ({ url }) => {
-  const gltf = useLoader(GLTFLoader, url);
-  
-  useEffect(() => {
-    console.log('GLTF Model loaded:', {
-      animations: gltf.animations.length,
-      scenes: gltf.scenes.length,
-      materials: Object.keys(gltf.materials || {}).length
-    });
-  }, [gltf]);
-
-  return (
-    <Center>
-      <primitive object={gltf.scene} />
-    </Center>
-  );
-};
-
-const OBJModel: React.FC<ModelProps> = ({ url }) => {
-  const obj = useLoader(OBJLoader, url);
-
-  useEffect(() => {
-    console.log('OBJ Model loaded:', {
-      children: obj.children.length,
-      type: obj.type
-    });
-  }, [obj]);
-
-  return (
-    <Center>
-      <primitive object={obj} />
-    </Center>
-  );
-};
-
-const FBXModel: React.FC<ModelProps> = ({ url }) => {
-  const fbx = useLoader(FBXLoader, url);
-
-  useEffect(() => {
-    console.log('FBX Model loaded:', {
-      children: fbx.children.length,
-      animations: fbx.animations.length,
-      type: fbx.type
-    });
-  }, [fbx]);
-
-  return (
-    <Center>
-      <primitive object={fbx} scale={0.01} />
-    </Center>
-  );
-};
-
 export const Model: React.FC<ModelProps> = ({ url, type }) => {
+  const { scene } = useThree();
+  const modelRef = useRef<Group>();
+
+  // Define loader outside of conditional
+  const gltfLoader = useLoader(GLTFLoader, url);
+  const objLoader = useLoader(OBJLoader, url);
+  const fbxLoader = useLoader(FBXLoader, url);
+
+  // Select the appropriate loaded model
+  const loadedModel = (() => {
+    switch (type.toLowerCase()) {
+      case 'glb':
+      case 'gltf':
+        return (gltfLoader as GLTF).scene;
+      case 'obj':
+        return objLoader;
+      case 'fbx':
+        return fbxLoader;
+      default:
+        console.error('Unsupported file type:', type);
+        return null;
+    }
+  })();
+
   useEffect(() => {
-    console.log('Attempting to load model:', {
-      url,
-      type
-    });
-  }, [url, type]);
+    if (loadedModel) {
+      const extractHierarchy = (object: any) => {
+        const node = {
+          name: object.name || 'Unnamed',
+          type: object.type,
+          children: [] as any[]
+        };
 
-  let ModelComponent: React.FC<ModelProps>;
-  switch (type) {
-    case 'glb':
-    case 'gltf':
-      ModelComponent = GLTFModel;
-      break;
-    case 'obj':
-      ModelComponent = OBJModel;
-      break;
-    case 'fbx':
-      ModelComponent = FBXModel;
-      break;
-    default:
-      console.error('Unsupported file type:', type);
-      return null;
-  }
+        if (object.children && object.children.length > 0) {
+          node.children = object.children.map((child: any) => extractHierarchy(child));
+        }
 
-  return (
-    <Suspense fallback={null}>
-      <ModelComponent url={url} />
-    </Suspense>
-  );
+        return node;
+      };
+
+      const hierarchy = extractHierarchy(loadedModel);
+      const event = new CustomEvent('modelHierarchyUpdate', { detail: hierarchy });
+      window.dispatchEvent(event);
+    }
+  }, [loadedModel]);
+
+  if (!loadedModel) return null;
+
+  return <primitive ref={modelRef} object={loadedModel} />;
 };

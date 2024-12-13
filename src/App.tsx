@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ModelViewer from './components/ModelViewer/ModelViewer';
 import ModelList from './components/ModelList/ModelList';
 import SettingsPanel from './components/SettingsPanel/SettingsPanel';
+import ModelHierarchy from './components/ModelHierarchy/ModelHierarchy';
 import { ModelInfo, LightPreset } from './types';
 import { defaultLightPreset } from './components/SettingsPanel/LightSettings/lightPresets';
 import './styles/variables.css';
@@ -10,6 +11,7 @@ import './App.css';
 const App: React.FC = () => {
   const [models, setModels] = useState<ModelInfo[]>([]);
   const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
+  const [modelHierarchy, setModelHierarchy] = useState<any>(null);
   const [environmentPreset, setEnvironmentPreset] = useState('sunset');
   const [selectedLightPreset, setSelectedLightPreset] = useState<LightPreset>(defaultLightPreset);
   const [showEnvironment, setShowEnvironment] = useState(true);
@@ -37,6 +39,17 @@ const App: React.FC = () => {
     URL.revokeObjectURL(modelToDelete.url);
   }, [selectedModel]);
 
+  useEffect(() => {
+    const handleHierarchyUpdate = (event: any) => {
+      setModelHierarchy(event.detail);
+    };
+
+    window.addEventListener('modelHierarchyUpdate', handleHierarchyUpdate);
+    return () => {
+      window.removeEventListener('modelHierarchyUpdate', handleHierarchyUpdate);
+    };
+  }, []);
+
   return (
     <div className="app">
       <div className="left-sidebar">
@@ -47,6 +60,7 @@ const App: React.FC = () => {
           onModelsAdd={handleModelsAdd}
           onModelDelete={handleModelDelete}
         />
+        <ModelHierarchy hierarchy={modelHierarchy} />
       </div>
       <ModelViewer
         selectedModel={selectedModel}
