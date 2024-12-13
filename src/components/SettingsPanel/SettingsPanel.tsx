@@ -11,15 +11,19 @@ interface SettingsPanelProps {
   onEnvironmentChange: (preset: string) => void;
   selectedLightPreset: LightPreset;
   onLightPresetChange: (preset: LightPreset) => void;
+  showEnvironment: boolean;
+  onShowEnvironmentChange: (show: boolean) => void;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   environmentPreset,
   onEnvironmentChange,
   selectedLightPreset,
-  onLightPresetChange
+  onLightPresetChange,
+  showEnvironment,
+  onShowEnvironmentChange
 }) => {
-  const [activeTab, setActiveTab] = useState<'environment' | 'light'>('environment');
+  const [activeTab, setActiveTab] = useState<'environment' | 'light'>('light');
 
   return (
     <div className="settings-panel">
@@ -49,6 +53,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         <LightSettings
           selectedPreset={selectedLightPreset}
           onPresetChange={onLightPresetChange}
+          showEnvironment={showEnvironment}
+          onShowEnvironmentChange={onShowEnvironmentChange}
+          environmentPreset={environmentPreset}
         />
       )}
     </div>

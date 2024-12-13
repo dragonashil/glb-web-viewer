@@ -9,12 +9,14 @@ interface ModelViewerProps {
   selectedModel: ModelInfo | null;
   environmentPreset: string;
   lightPreset: LightPreset;
+  showEnvironment: boolean;
 }
 
 const ModelViewer: React.FC<ModelViewerProps> = ({
   selectedModel,
   environmentPreset,
-  lightPreset
+  lightPreset,
+  showEnvironment
 }) => {
   useEffect(() => {
     if (selectedModel) {
@@ -34,7 +36,9 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
           <>
             <Model url={selectedModel.url} type={selectedModel.type} />
             <OrbitControls makeDefault />
-            <Environment preset={environmentPreset as any} background />
+            {showEnvironment && (
+              <Environment preset={environmentPreset as any} background />
+            )}
             <directionalLight 
               position={[
                 lightPreset.directionalLight.position[0],

@@ -1,78 +1,62 @@
-import React, { useState } from 'react';
-import ModelList from './components/ModelList/ModelList';
+import React, { useState, useCallback } from 'react';
 import ModelViewer from './components/ModelViewer/ModelViewer';
+import ModelList from './components/ModelList/ModelList';
 import SettingsPanel from './components/SettingsPanel/SettingsPanel';
 import { ModelInfo, LightPreset } from './types';
+import { defaultLightPreset } from './components/SettingsPanel/LightSettings/lightPresets';
 import './styles/variables.css';
 import './App.css';
 
-const DEFAULT_LIGHT_PRESET: LightPreset = {
-  name: "Natural Day",
-  description: "Soft, natural daylight illumination",
-  gradient: ["#87CEEB", "#E0F7FA"],
-  intensity: 1.0,
-  directionalLight: {
-    position: [5, 20, 2],
-    color: "#FFFFFF",
-    intensity: 3.0
-  },
-  hemisphereLight: {
-    skyColor: "#87CEEB",
-    groundColor: "#E0F7FA",
-    intensity: 1.5
-  },
-  spotlights: [
-    { position: [10, 10, 10], color: "#FFFFFF", intensity: 0.8 },
-    { position: [-5, 8, -5], color: "#FFF8E1", intensity: 0.6 }
-  ],
-  ambientLight: { 
-    intensity: 0.6, 
-    color: "#FFFFFF" 
-  }
-};
-
-function App() {
+const App: React.FC = () => {
   const [models, setModels] = useState<ModelInfo[]>([]);
   const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
   const [environmentPreset, setEnvironmentPreset] = useState('sunset');
-  const [lightPreset, setLightPreset] = useState<LightPreset>(DEFAULT_LIGHT_PRESET);
+  const [lightPreset, setLightPreset] = useState<LightPreset>(defaultLightPreset);
+  const [showEnvironment, setShowEnvironment] = useState(true);
 
-  const handleModelsAdd = (newModels: ModelInfo[]) => {
+  const handleModelSelect = useCallback((model: ModelInfo) => {
+    setSelectedModel(model);
+  }, []);
+
+  const handleModelsAdd = useCallback((newModels: ModelInfo[]) => {
     const modelsWithNames = newModels.map((model, index) => ({
       ...model,
       name: model.name || `Model ${models.length + index + 1}`
     }));
-    setModels([...models, ...modelsWithNames]);
+    setModels(prevModels => [...prevModels, ...modelsWithNames]);
     if (!selectedModel && modelsWithNames.length > 0) {
       setSelectedModel(modelsWithNames[0]);
     }
-  };
-
-  const handleModelSelect = (model: ModelInfo) => {
-    setSelectedModel(model);
-  };
+  }, [models, selectedModel]);
 
   return (
     <div className="app">
-      <ModelList
-        models={models}
-        selectedModel={selectedModel}
-        onModelSelect={handleModelSelect}
-        onModelsAdd={handleModelsAdd}
-      />
+      <div className="left-sidebar">
+        <ModelList
+          models={models}
+          selectedModel={selectedModel}
+          onModelSelect={handleModelSelect}
+          onModelsAdd={handleModelsAdd}
+        />
+      </div>
       <ModelViewer
         selectedModel={selectedModel}
         environmentPreset={environmentPreset}
         lightPreset={lightPreset}
+        showEnvironment={showEnvironment}
       />
-      <SettingsPanel
-        environmentPreset={environmentPreset}
-        onEnvironmentChange={setEnvironmentPreset}
-        selectedLightPreset={lightPreset}
-        onLightPresetChange={setLightPreset}
-      />
+      <div className="right-sidebar">
+        <SettingsPanel
+          environmentPreset={environmentPreset}
+          onEnvironmentChange={setEnvironmentPreset}
+          selectedLightPreset={lightPreset}
+          onLightPresetChange={setLightPreset}
+          showEnvironment={showEnvironment}
+          onShowEnvironmentChange={setShowEnvironment}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

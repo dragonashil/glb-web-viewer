@@ -6,32 +6,33 @@ body {
 }
 
 .app {
-  display: grid;
-  grid-template-columns: 250px 1fr 300px;
+  display: flex;
   height: 100vh;
-  background: var(--background-dark);
-  color: #ffffff;
+  width: 100vw;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-.app > * {
-  overflow: hidden;
-}
-
-.model-list {
-  background: var(--surface-dark);
+.left-sidebar {
+  width: 300px;
   border-right: 1px solid var(--border-color);
-  padding: 20px;
-}
-
-.viewer {
-  position: relative;
-  background: #000000;
-}
-
-.settings-panel {
-  background: var(--surface-dark);
-  border-left: 1px solid var(--border-color);
-  padding: 20px;
+  background-color: var(--elevated-dark);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.right-sidebar {
+  width: 300px;
+  border-left: 1px solid var(--border-color);
+  background-color: var(--elevated-dark);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-viewer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }

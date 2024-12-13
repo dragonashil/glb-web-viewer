@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { LightPreset } from '../../../types';
 import { lightPresets, generateRandomPreset } from './lightPresets';
 import './LightSettings.css';
@@ -6,11 +8,17 @@ import './LightSettings.css';
 interface LightSettingsProps {
   selectedPreset: LightPreset;
   onPresetChange: (preset: LightPreset) => void;
+  showEnvironment: boolean;
+  onShowEnvironmentChange: (show: boolean) => void;
+  environmentPreset: string;
 }
 
 const LightSettings: React.FC<LightSettingsProps> = ({
   selectedPreset,
-  onPresetChange
+  onPresetChange,
+  showEnvironment,
+  onShowEnvironmentChange,
+  environmentPreset
 }) => {
   const [showInfo, setShowInfo] = useState(false);
 
@@ -23,6 +31,20 @@ const LightSettings: React.FC<LightSettingsProps> = ({
         </button>
       </div>
 
+      <div className="environment-toggle">
+        <label className="toggle-label">
+          Environment Map ({environmentPreset})
+          <div className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={showEnvironment}
+              onChange={(e) => onShowEnvironmentChange(e.target.checked)}
+            />
+            <span className="toggle-slider"></span>
+          </div>
+        </label>
+      </div>
+
       <div className="light-items">
         {lightPresets.map((preset) => (
           <div
@@ -32,8 +54,7 @@ const LightSettings: React.FC<LightSettingsProps> = ({
             style={{
               background: `linear-gradient(to right, ${preset.gradient[0]}, ${preset.gradient[1]})`
             }}
-            data-preset={preset.name.toLowerCase().replace(/\s+/g, '-')}
-          >
+            data-preset={preset.name.toLowerCase().replace(/\s+/g, '-')}>
             <span>{preset.name}</span>
           </div>
         ))}
@@ -47,8 +68,7 @@ const LightSettings: React.FC<LightSettingsProps> = ({
           data-preset="random"
           style={{
             background: 'linear-gradient(to right, var(--accent-color), var(--primary-color))'
-          }}
-        >
+          }}>
           <span>Random Mix</span>
         </div>
       </div>
@@ -57,7 +77,7 @@ const LightSettings: React.FC<LightSettingsProps> = ({
         <div className="light-info-section">
           <h4>Light Information - {selectedPreset.name}</h4>
           <p className="preset-description">{selectedPreset.description}</p>
-          
+
           <div className="light-info">
             <h5>Directional Light</h5>
             <p>Color: {selectedPreset.directionalLight.color}</p>
