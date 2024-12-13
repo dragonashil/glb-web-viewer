@@ -19,18 +19,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   selectedLightPreset,
   onLightPresetChange
 }) => {
-  const [activeTab, setActiveTab] = useState<'light' | 'environment'>('light');
+  const [activeTab, setActiveTab] = useState<'environment' | 'light'>('environment');
 
   return (
     <div className="settings-panel">
       <div className="settings-tabs">
-        <button
-          className={`tab-button ${activeTab === 'light' ? 'active' : ''}`}
-          onClick={() => setActiveTab('light')}
-        >
-          <FontAwesomeIcon icon={faLightbulb} />
-          Light
-        </button>
         <button
           className={`tab-button ${activeTab === 'environment' ? 'active' : ''}`}
           onClick={() => setActiveTab('environment')}
@@ -38,17 +31,24 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <FontAwesomeIcon icon={faImage} />
           Environment
         </button>
+        <button
+          className={`tab-button ${activeTab === 'light' ? 'active' : ''}`}
+          onClick={() => setActiveTab('light')}
+        >
+          <FontAwesomeIcon icon={faLightbulb} />
+          Light
+        </button>
       </div>
 
-      {activeTab === 'light' ? (
-        <LightSettings
-          selectedPreset={selectedLightPreset}
-          onPresetChange={onLightPresetChange}
-        />
-      ) : (
+      {activeTab === 'environment' ? (
         <EnvironmentSettings
           selectedPreset={environmentPreset}
           onPresetChange={onEnvironmentChange}
+        />
+      ) : (
+        <LightSettings
+          selectedPreset={selectedLightPreset}
+          onPresetChange={onLightPresetChange}
         />
       )}
     </div>
