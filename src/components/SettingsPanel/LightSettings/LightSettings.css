@@ -1,0 +1,248 @@
+.light-settings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.light-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.light-header h3 {
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 500;
+}
+
+.info-button {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.info-button:hover {
+  background: rgba(0, 188, 212, 0.1);
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+}
+
+.light-items {
+  display: grid;
+  gap: 12px;
+}
+
+.light-item {
+  border-radius: 8px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+}
+
+.light-item span {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  font-weight: 500;
+  z-index: 1;
+  letter-spacing: 0.5px;
+}
+
+.light-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-color: var(--primary-color);
+}
+
+.light-item.selected {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
+}
+
+.light-info-section {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--elevated-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.light-info-section h4 {
+  color: var(--primary-color);
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.preset-description {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.light-info {
+  margin-bottom: 1.5rem;
+}
+
+.light-info:last-child {
+  margin-bottom: 0;
+}
+
+.light-info h5 {
+  color: var(--primary-light);
+  margin: 1rem 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.light-info p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.spotlight-info {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--primary-dark);
+}
+
+.spotlight-info p:first-child {
+  color: var(--primary-light);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.environment-toggle {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.toggle-label {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.toggle-switch {
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 44px;
+}
+
+.toggle-switch input {
+  height: 0;
+  opacity: 0;
+  width: 0;
+}
+
+.toggle-slider {
+  background-color: var(--elevated-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.toggle-slider:before {
+  background-color: var(--text-color);
+  border-radius: 50%;
+  content: "";
+  height: 16px;
+  left: 4px;
+  position: absolute;
+  bottom: 3px;
+  transition: .4s;
+  width: 16px;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+  background-color: white;
+}
+
+/* Natural Day Preset */
+.light-item[data-preset="natural-day"] {
+  background: linear-gradient(to right, #87CEEB, #E0F7FA);
+}
+
+/* Neon Night Preset */
+.light-item[data-preset="neon-night"] {
+  background: linear-gradient(to right, #FF1493, #00FFFF);
+}
+
+/* Cyberpunk Preset */
+.light-item[data-preset="cyberpunk"] {
+  background: linear-gradient(to right, #00FF9F, #FF00FF);
+}
+
+/* Sunset Warmth Preset */
+.light-item[data-preset="sunset-warmth"] {
+  background: linear-gradient(to right, #FF7F50, #FFD700);
+}
+
+/* Arctic Aurora Preset */
+.light-item[data-preset="arctic-aurora"] {
+  background: linear-gradient(to right, #000B3B, #003366);
+}
+
+/* Studio Perfect Preset */
+.light-item[data-preset="studio-perfect"] {
+  background: linear-gradient(to right, #2C3E50, #34495E);
+}
+
+/* Mystic Forest Preset */
+.light-item[data-preset="mystic-forest"] {
+  background: linear-gradient(to right, #1B4F3C, #2E8B57);
+}
+
+/* Desert Sun Preset */
+.light-item[data-preset="desert-sun"] {
+  background: linear-gradient(to right, #FFB74D, #FFE0B2);
+}
+
+/* Horror Scene Preset */
+.light-item[data-preset="horror-scene"] {
+  background: linear-gradient(to right, #1A1A1A, #2C1810);
+}
+
+/* Underwater Preset */
+.light-item[data-preset="underwater"] {
+  background: linear-gradient(to right, #006994, #00BFFF);
+}
+
+/* Random Mix Preset */
+.light-item[data-preset="random"] {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+}

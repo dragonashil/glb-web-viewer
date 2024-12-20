@@ -1,0 +1,60 @@
+.environment-settings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.environment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.environment-header h3 {
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 500;
+}
+
+.preset-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.preset-item {
+  background: var(--elevated-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.preset-item.selected {
+  border-color: var(--primary-color);
+  background: var(--primary-dark);
+}
+
+.preset-item h4 {
+  margin: 0 0 8px 0;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.preset-item p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}

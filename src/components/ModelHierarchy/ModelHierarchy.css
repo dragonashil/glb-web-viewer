@@ -1,0 +1,103 @@
+.model-hierarchy {
+  background: var(--elevated-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  color: var(--text-color);
+}
+
+.model-hierarchy h2 {
+  font-size: 1.2em;
+  margin: 0 0 16px 0;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hierarchy-title-icon {
+  color: var(--primary-color);
+}
+
+.hierarchy-empty {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 16px;
+}
+
+.hierarchy-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.hierarchy-item {
+  margin: 4px 0;
+}
+
+.hierarchy-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.hierarchy-item-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.expand-button:hover {
+  color: var(--primary-color);
+}
+
+.hierarchy-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.hierarchy-name {
+  flex: 1;
+  font-size: 0.9em;
+}
+
+.hierarchy-type {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.hierarchy-children {
+  position: relative;
+}
+
+.hierarchy-children::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--border-color);
+}

@@ -1,0 +1,108 @@
+.model-list {
+  background: var(--surface-dark);
+  border-right: 1px solid var(--border-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.model-list h2 {
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 500;
+}
+
+.dropzone {
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.dropzone:hover {
+  border-color: var(--primary-light);
+  background: rgba(0, 188, 212, 0.1);
+  transform: translateY(-1px);
+}
+
+.dropzone.active {
+  border-color: var(--primary-light);
+  background: rgba(0, 188, 212, 0.15);
+  transform: translateY(-2px);
+}
+
+.upload-icon {
+  color: var(--primary-color);
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.model-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.model-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--elevated-dark);
+  border: 1px solid var(--border-color);
+}
+
+.model-item:hover {
+  background: #2A2A2A;
+  transform: translateY(-1px);
+  border-color: var(--primary-dark);
+}
+
+.model-item.selected {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+  border-color: var(--primary-light);
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.15);
+}
+
+.model-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.model-item small {
+  color: #888;
+  margin-left: 8px;
+}
+
+.model-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #ff4444;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.delete-button:hover {
+  opacity: 1;
+}
