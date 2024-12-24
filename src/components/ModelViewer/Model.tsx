@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
@@ -18,51 +18,97 @@ interface ModelProps {
 export const Model: React.FC<ModelProps> = ({ url, type }) => {
   const { scene } = useThree();
   const modelRef = useRef<Group>();
+  const [fbxModel, setFbxModel] = useState<Group | null>(null);
+  const modelType = type.toLowerCase();
 
-  // Initialize all loaders
-  const gltfLoader = useLoader(GLTFLoader, url);
-  const objLoader = useLoader(OBJLoader, url);
-  const fbxLoader = useLoader(FBXLoader, url);
-  const colladaLoader = useLoader(ColladaLoader, url);
-  const stlLoader = useLoader(STLLoader, url);
-  const plyLoader = useLoader(PLYLoader, url);
+  // 모든 로더를 초기화
+  const gltfResult = useLoader(GLTFLoader, url, (loader) => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
+    (loader as GLTFLoader).setDRACOLoader(dracoLoader);
+  });
+
+  const objResult = useLoader(OBJLoader, url);
+  const colladaResult = useLoader(ColladaLoader, url);
+  const stlResult = useLoader(STLLoader, url);
+  const plyResult = useLoader(PLYLoader, url);
+
+  // FBX 로더 직접 초기화
+  useEffect(() => {
+    if (modelType === 'fbx' && url) {
+      const loader = new FBXLoader();
+      loader.load(
+        url,
+        (object) => {
+          setFbxModel(object);
+        },
+        (xhr) => {
+          console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        (error) => {
+          console.error('FBX 로딩 에러:', error);
+        }
+      );
+    }
+
+    // cleanup
+    return () => {
+      if (fbxModel) {
+        fbxModel.traverse((child) => {
+          if ((child as any).geometry) {
+            (child as any).geometry.dispose();
+          }
+          if ((child as any).material) {
+            (child as any).material.dispose();
+          }
+        });
+      }
+    };
+  }, [url, modelType]);
 
   // Select the appropriate loaded model
   const loadedModel = (() => {
-    switch (type.toLowerCase()) {
-      case 'glb':
-      case 'gltf':
-        return (gltfLoader as GLTF).scene;
-      case 'obj':
-        return objLoader;
-      case 'fbx':
-        return fbxLoader;
-      case 'dae':
-        return colladaLoader.scene;
-      case 'stl': {
-        const geometry = stlLoader;
-        const material = new MeshStandardMaterial({ color: 0xcccccc });
-        const mesh = new Mesh(geometry, material);
-        const group = new Group();
-        group.add(mesh);
-        return group;
+    try {
+      switch (modelType) {
+        case 'glb':
+        case 'gltf':
+          return gltfResult?.scene;
+        case 'obj':
+          return objResult;
+        case 'fbx':
+          return fbxModel;
+        case 'dae':
+          return colladaResult?.scene;
+        case 'stl': {
+          if (!stlResult) return null;
+          const material = new MeshStandardMaterial({ color: 0xcccccc });
+          const mesh = new Mesh(stlResult, material);
+          const group = new Group();
+          group.add(mesh);
+          return group;
+        }
+        case 'ply': {
+          if (!plyResult) return null;
+          const material = new MeshStandardMaterial({ color: 0xcccccc });
+          const mesh = new Mesh(plyResult, material);
+          const group = new Group();
+          group.add(mesh);
+          return group;
+        }
+        default:
+          console.error('Unsupported file type:', type);
+          return null;
       }
-      case 'ply': {
-        const geometry = plyLoader;
-        const material = new MeshStandardMaterial({ color: 0xcccccc });
-        const mesh = new Mesh(geometry, material);
-        const group = new Group();
-        group.add(mesh);
-        return group;
-      }
-      default:
-        console.error('Unsupported file type:', type);
-        return null;
+    } catch (error) {
+      console.error('모델 로딩 중 오류 발생:', error);
+      return null;
     }
   })();
 
   useEffect(() => {
     if (loadedModel) {
+      loadedModel.position.set(0, 0, 0); // 모델의 위치를 (0, 0, 0)으로 설정
+
       const extractHierarchy = (object: any) => {
         const node = {
           name: object.name || 'Unnamed',
