@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLoader, useThree } from '@react-three/fiber';
+import { useLoader } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader';
-import { Group, Mesh, BufferGeometry, MeshStandardMaterial } from 'three';
-import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { Group, Mesh, MeshStandardMaterial, Scene } from 'three';
 
 interface ModelProps {
   url: string;
@@ -16,22 +15,31 @@ interface ModelProps {
 }
 
 export const Model: React.FC<ModelProps> = ({ url, type }) => {
-  const { scene } = useThree();
-  const modelRef = useRef<Group>();
+  const modelRef = useRef<Group>(null);
   const [fbxModel, setFbxModel] = useState<Group | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const modelType = type.toLowerCase();
 
-  // 모든 로더를 초기화
-  const gltfResult = useLoader(GLTFLoader, url, (loader) => {
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/draco/');
-    (loader as GLTFLoader).setDRACOLoader(dracoLoader);
-  });
+  // GLTF 로더 초기화
+  const gltfResult = useGLTF(url);
 
-  const objResult = useLoader(OBJLoader, url);
-  const colladaResult = useLoader(ColladaLoader, url);
-  const stlResult = useLoader(STLLoader, url);
-  const plyResult = useLoader(PLYLoader, url);
+  // 다른 로더들 초기화
+  const objResult = useLoader(OBJLoader, url, undefined, (err) => {
+    setError('OBJ 파일을 로드하는 중 오류가 발생했습니다.');
+    console.error('OBJ 로딩 에러:', err);
+  });
+  const colladaResult = useLoader(ColladaLoader, url, undefined, (err) => {
+    setError('DAE 파일을 로드하는 중 오류가 발생했습니다.');
+    console.error('DAE 로딩 에러:', err);
+  });
+  const stlResult = useLoader(STLLoader, url, undefined, (err) => {
+    setError('STL 파일을 로드하는 중 오류가 발생했습니다.');
+    console.error('STL 로딩 에러:', err);
+  });
+  const plyResult = useLoader(PLYLoader, url, undefined, (err) => {
+    setError('PLY 파일을 로드하는 중 오류가 발생했습니다.');
+    console.error('PLY 로딩 에러:', err);
+  });
 
   // FBX 로더 직접 초기화
   useEffect(() => {
@@ -39,97 +47,72 @@ export const Model: React.FC<ModelProps> = ({ url, type }) => {
       const loader = new FBXLoader();
       loader.load(
         url,
-        (object) => {
+        (object: Group) => {
           setFbxModel(object);
         },
-        (xhr) => {
-          console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        },
-        (error) => {
-          console.error('FBX 로딩 에러:', error);
+        undefined,
+        (err) => {
+          setError('FBX 파일을 로드하는 중 오류가 발생했습니다.');
+          console.error('FBX 로딩 에러:', err);
         }
       );
     }
-
-    // cleanup
-    return () => {
-      if (fbxModel) {
-        fbxModel.traverse((child) => {
-          if ((child as any).geometry) {
-            (child as any).geometry.dispose();
-          }
-          if ((child as any).material) {
-            (child as any).material.dispose();
-          }
-        });
-      }
-    };
   }, [url, modelType]);
 
   // Select the appropriate loaded model
   const loadedModel = (() => {
-    try {
-      switch (modelType) {
-        case 'glb':
-        case 'gltf':
-          return gltfResult?.scene;
-        case 'obj':
-          return objResult;
-        case 'fbx':
-          return fbxModel;
-        case 'dae':
-          return colladaResult?.scene;
-        case 'stl': {
-          if (!stlResult) return null;
-          const material = new MeshStandardMaterial({ color: 0xcccccc });
-          const mesh = new Mesh(stlResult, material);
-          const group = new Group();
-          group.add(mesh);
-          return group;
-        }
-        case 'ply': {
-          if (!plyResult) return null;
-          const material = new MeshStandardMaterial({ color: 0xcccccc });
-          const mesh = new Mesh(plyResult, material);
-          const group = new Group();
-          group.add(mesh);
-          return group;
-        }
-        default:
-          console.error('Unsupported file type:', type);
-          return null;
+    switch (modelType) {
+      case 'glb':
+      case 'gltf':
+        return gltfResult.scene;
+      case 'obj':
+        return objResult;
+      case 'fbx':
+        return fbxModel;
+      case 'dae':
+        return colladaResult.scene;
+      case 'stl': {
+        const material = new MeshStandardMaterial({ color: 0xcccccc });
+        const mesh = new Mesh(stlResult, material);
+        const group = new Group();
+        group.add(mesh);
+        return group;
       }
-    } catch (error) {
-      console.error('모델 로딩 중 오류 발생:', error);
-      return null;
+      case 'ply': {
+        const material = new MeshStandardMaterial({ color: 0xcccccc });
+        const mesh = new Mesh(plyResult, material);
+        const group = new Group();
+        group.add(mesh);
+        return group;
+      }
+      default:
+        console.error('지원되지 않는 파일 형식:', type);
+        return null;
     }
   })();
 
   useEffect(() => {
-    if (loadedModel) {
-      loadedModel.position.set(0, 0, 0); // 모델의 위치를 (0, 0, 0)으로 설정
-
-      const extractHierarchy = (object: any) => {
-        const node = {
-          name: object.name || 'Unnamed',
-          type: object.type,
-          children: [] as any[]
-        };
-
-        if (object.children && object.children.length > 0) {
-          node.children = object.children.map((child: any) => extractHierarchy(child));
-        }
-
-        return node;
-      };
-
-      const hierarchy = extractHierarchy(loadedModel);
-      const event = new CustomEvent('modelHierarchyUpdate', { detail: hierarchy });
-      window.dispatchEvent(event);
+    if (loadedModel && modelRef.current) {
+      // 기존 자식 요소들을 제거
+      while (modelRef.current.children.length > 0) {
+        modelRef.current.remove(modelRef.current.children[0]);
+      }
+      // 새로운 모델 추가
+      if (loadedModel instanceof Scene) {
+        loadedModel.children.forEach((child) => {
+          modelRef.current?.add(child.clone());
+        });
+      } else {
+        modelRef.current.add(loadedModel);
+      }
     }
   }, [loadedModel]);
 
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
+
   if (!loadedModel) return null;
 
-  return <primitive ref={modelRef} object={loadedModel} />;
+  return <group ref={modelRef} />;
 };
