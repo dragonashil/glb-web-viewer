@@ -31,14 +31,34 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
 
   const getBackgroundColor = () => {
     if (showEnvironment) return '#000';
-    const gradient = lightPreset.gradient;
-    return gradient[0];
+    const [color1, color2] = lightPreset.gradient;
+    const direction = lightPreset.gradientDirection;
+
+    if (direction === 'circle') {
+      return `radial-gradient(circle, ${color1}, ${color2})`;
+    }
+
+    if (direction === 'custom') {
+      return `linear-gradient(${lightPreset.gradientAngle}deg, ${color1}, ${color2})`;
+    }
+
+    // 기본 방향 (to right, to bottom, to bottom right 등)
+    return `linear-gradient(${direction}, ${color1}, ${color2})`;
   };
 
   return (
-    <div className="model-viewer">
-      <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
-        <color attach="background" args={[getBackgroundColor()]} />
+    <div
+      className="model-viewer"
+      style={{
+        background: getBackgroundColor(),
+        position: 'relative'  // Canvas가 배경 위에 올바르게 표시되도록
+      }}
+    >
+      <Canvas
+        shadows
+        camera={{ position: [0, 3, 10], fov: 50 }}
+        style={{ background: 'transparent' }}  // Canvas 배경을 투명하게
+      >
         <OrbitControls />
         {showEnvironment && (
           <Environment

@@ -42,6 +42,8 @@ export interface LightPreset {
   name: string;
   description: string;
   gradient: string[];
+  gradientDirection: string;
+  gradientAngle: number;
   intensity: number;
   directionalLight: DirectionalLight;
   hemisphereLight: HemisphereLight;

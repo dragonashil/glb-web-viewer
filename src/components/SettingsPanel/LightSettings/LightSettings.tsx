@@ -13,6 +13,19 @@ interface LightSettingsProps {
   environmentPreset: string;
 }
 
+interface GradientDirection {
+  value: string;
+  label: string;
+}
+
+const gradientDirections: GradientDirection[] = [
+  { value: 'to right', label: 'Horizontal' },
+  { value: 'to bottom', label: 'Vertical' },
+  { value: 'to bottom right', label: 'Diagonal' },
+  { value: 'circle', label: 'Radial' },
+  { value: 'custom', label: 'Custom Angle' }
+];
+
 const LightSettings: React.FC<LightSettingsProps> = ({
   selectedPreset,
   onPresetChange,
@@ -21,6 +34,38 @@ const LightSettings: React.FC<LightSettingsProps> = ({
   environmentPreset
 }) => {
   const [showInfo, setShowInfo] = useState(false);
+  const [gradientAngle, setGradientAngle] = useState(45);
+  const [selectedDirection, setSelectedDirection] = useState('to bottom right');
+
+  const handleGradientColorChange = (index: number, color: string) => {
+    const newPreset = {
+      ...selectedPreset,
+      gradient: selectedPreset.gradient.map((c, i) => i === index ? color : c),
+      gradientDirection: selectedDirection,
+      gradientAngle: gradientAngle
+    };
+    onPresetChange(newPreset);
+  };
+
+  const handleDirectionChange = (direction: string) => {
+    setSelectedDirection(direction);
+    const newPreset = {
+      ...selectedPreset,
+      gradientDirection: direction,
+      gradientAngle: gradientAngle
+    };
+    onPresetChange(newPreset);
+  };
+
+  const handleAngleChange = (angle: number) => {
+    setGradientAngle(angle);
+    const newPreset = {
+      ...selectedPreset,
+      gradientDirection: 'custom',
+      gradientAngle: angle
+    };
+    onPresetChange(newPreset);
+  };
 
   return (
     <div className="light-settings">
@@ -29,6 +74,54 @@ const LightSettings: React.FC<LightSettingsProps> = ({
         <button className="info-button" onClick={() => setShowInfo(!showInfo)}>
           {showInfo ? 'Hide Info' : 'Show Info'}
         </button>
+      </div>
+
+      <div className="background-settings">
+        <h4>Background Color</h4>
+        <div className="color-pickers">
+          {selectedPreset.gradient.map((color, index) => (
+            <div key={index} className="color-picker-container">
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => handleGradientColorChange(index, e.target.value)}
+                className="color-picker"
+              />
+              <span className="color-label">Color {index + 1}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="gradient-controls">
+          <div className="gradient-direction">
+            <h4>Gradient Direction</h4>
+            <div className="direction-buttons">
+              {gradientDirections.map((direction) => (
+                <button
+                  key={direction.value}
+                  className={`direction-button ${selectedDirection === direction.value ? 'active' : ''}`}
+                  onClick={() => handleDirectionChange(direction.value)}
+                >
+                  {direction.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {(selectedDirection === 'custom' || selectedDirection === 'to bottom right') && (
+            <div className="gradient-angle">
+              <h4>Gradient Angle: {gradientAngle}°</h4>
+              <input
+                type="range"
+                min="0"
+                max="360"
+                value={gradientAngle}
+                onChange={(e) => handleAngleChange(Number(e.target.value))}
+                className="angle-slider"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="environment-toggle">
