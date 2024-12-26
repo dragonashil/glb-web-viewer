@@ -1,10 +1,12 @@
 import { LightPreset } from '../../../types';
 
 export const defaultLightPreset: LightPreset = {
-  name: "Environment Only",
-  description: "Use only environment lighting",
-  gradient: ["#000000", "#000000"],
-  intensity: 0,
+  name: 'Default',
+  description: 'Default lighting setup',
+  gradient: ['#1a1a1a', '#2c2c2c'],
+  gradientDirection: 'to bottom right',
+  gradientAngle: 45,
+  intensity: 1,
   directionalLight: {
     position: [0, 0, 0],
     color: "#000000",
@@ -26,8 +28,10 @@ export const lightPresets: LightPreset[] = [
   defaultLightPreset,
   {
     name: "Natural Day",
-    description: "Soft, natural daylight illumination with warm undertones",
+    description: "Bright, natural daylight setup",
     gradient: ["#87CEEB", "#E0F7FA"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.0,
     directionalLight: {
       position: [5, 20, 2],
@@ -52,6 +56,8 @@ export const lightPresets: LightPreset[] = [
     name: "Neon Night",
     description: "Vibrant cyberpunk-inspired lighting with neon accents",
     gradient: ["#20202A", "#2D3047"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.3,
     directionalLight: {
       position: [0, 15, 2],
@@ -74,6 +80,8 @@ export const lightPresets: LightPreset[] = [
     name: "Cyberpunk",
     description: "High-contrast futuristic lighting with bold colors",
     gradient: ["#0B0B2C", "#2E0B45"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.4,
     directionalLight: {
       position: [3, 15, 2],
@@ -96,6 +104,8 @@ export const lightPresets: LightPreset[] = [
     name: "Sunset Warmth",
     description: "Warm, golden hour lighting with soft shadows",
     gradient: ["#FF7F50", "#FFD700"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.2,
     directionalLight: {
       position: [-3, 10, -2],
@@ -117,6 +127,8 @@ export const lightPresets: LightPreset[] = [
     name: "Arctic Aurora",
     description: "Cool, ethereal lighting inspired by the northern lights",
     gradient: ["#000B3B", "#003366"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.1,
     directionalLight: {
       position: [0, 12, 0],
@@ -139,6 +151,8 @@ export const lightPresets: LightPreset[] = [
     name: "Studio Perfect",
     description: "Professional studio lighting setup for clear presentation",
     gradient: ["#2C3E50", "#34495E"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.5,
     directionalLight: {
       position: [2, 18, 4],
@@ -161,6 +175,8 @@ export const lightPresets: LightPreset[] = [
     name: "Mystic Forest",
     description: "Ethereal forest lighting with mystical green hues",
     gradient: ["#1B4F3C", "#2E8B57"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.2,
     directionalLight: {
       position: [1, 16, 3],
@@ -183,6 +199,8 @@ export const lightPresets: LightPreset[] = [
     name: "Desert Sun",
     description: "Harsh, bright lighting typical of desert environments",
     gradient: ["#FFB74D", "#FFE0B2"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 1.6,
     directionalLight: {
       position: [0, 20, -2],
@@ -204,6 +222,8 @@ export const lightPresets: LightPreset[] = [
     name: "Horror Scene",
     description: "Dark and eerie lighting for horror effects",
     gradient: ["#1A1A1A", "#2C1810"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 0.8,
     directionalLight: {
       position: [-2, 8, -4],
@@ -226,6 +246,8 @@ export const lightPresets: LightPreset[] = [
     name: "Underwater",
     description: "Soft, diffused lighting with aquatic color tones",
     gradient: ["#006994", "#00BFFF"],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: 0.9,
     directionalLight: {
       position: [0, 15, 5],
@@ -247,7 +269,7 @@ export const lightPresets: LightPreset[] = [
 ];
 
 export const generateRandomPreset = (): LightPreset => {
-  const generateRandomColor = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  const generateRandomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
   const generateRandomPosition = () => [
     Math.random() * 20 - 10,
     Math.random() * 20 + 5,
@@ -258,6 +280,8 @@ export const generateRandomPreset = (): LightPreset => {
     name: "Random Mix",
     description: "Randomly generated lighting configuration",
     gradient: [generateRandomColor(), generateRandomColor()],
+    gradientDirection: 'to bottom right',
+    gradientAngle: 45,
     intensity: Math.random() * 2 + 0.5,
     directionalLight: {
       position: generateRandomPosition(),

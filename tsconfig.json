@@ -18,7 +18,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": [
+      "react",
+      "react-dom",
+      "three",
+      "@react-three/fiber"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "three/*": [
+        "../node_modules/three/*"
+      ]
+    }
   },
   "include": [
     "src"

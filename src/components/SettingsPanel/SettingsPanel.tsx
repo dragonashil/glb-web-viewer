@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLightbulb, faImage } from '@fortawesome/free-solid-svg-icons';
-import { LightPreset } from '../../types';
+import { LightPreset, EnvironmentPreset } from '../../types';
 import LightSettings from './LightSettings/LightSettings';
 import EnvironmentSettings from './EnvironmentSettings/EnvironmentSettings';
 import './SettingsPanel.css';
 
 interface SettingsPanelProps {
-  environmentPreset: string;
-  onEnvironmentChange: (preset: string) => void;
+  environmentPreset: EnvironmentPreset;
+  onEnvironmentChange: (preset: EnvironmentPreset) => void;
   selectedLightPreset: LightPreset;
   onLightPresetChange: (preset: LightPreset) => void;
   showEnvironment: boolean;
