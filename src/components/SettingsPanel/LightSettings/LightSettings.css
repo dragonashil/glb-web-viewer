@@ -330,13 +330,16 @@ input:checked+.toggle-slider:before {
 .angle-slider {
   width: 100%;
   margin-top: 0.5rem;
+  appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
   height: 4px;
   border-radius: 2px;
   background: var(--border-color);
 }
 
 .angle-slider::-webkit-slider-thumb {
+  appearance: none;
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
@@ -351,4 +354,5 @@ input:checked+.toggle-slider:before {
   border-radius: 50%;
   background: var(--primary-color);
   cursor: pointer;
+  border: none;
 }
