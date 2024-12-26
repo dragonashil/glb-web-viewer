@@ -56,32 +56,41 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-      <div className="left-sidebar">
-        <ModelList
-          models={models}
+      <header>
+        <h1>Online GLB & 3D Model Viewer</h1>
+        <p>Free browser-based 3D model viewer supporting GLB, GLTF, OBJ, FBX, STL, PLY, and DAE formats</p>
+      </header>
+      <div className="app-content">
+        <div className="left-sidebar">
+          <ModelList
+            models={models}
+            selectedModel={selectedModel}
+            onModelSelect={handleModelSelect}
+            onModelsAdd={handleModelsAdd}
+            onModelDelete={handleModelDelete}
+          />
+          <ModelHierarchy hierarchy={modelHierarchy} />
+        </div>
+        <ModelViewer
           selectedModel={selectedModel}
-          onModelSelect={handleModelSelect}
-          onModelsAdd={handleModelsAdd}
-          onModelDelete={handleModelDelete}
-        />
-        <ModelHierarchy hierarchy={modelHierarchy} />
-      </div>
-      <ModelViewer
-        selectedModel={selectedModel}
-        environmentPreset={environmentPreset}
-        lightPreset={selectedLightPreset}
-        showEnvironment={showEnvironment}
-      />
-      <div className="right-sidebar">
-        <SettingsPanel
           environmentPreset={environmentPreset}
-          onEnvironmentChange={handleEnvironmentChange}
-          selectedLightPreset={selectedLightPreset}
-          onLightPresetChange={setSelectedLightPreset}
+          lightPreset={selectedLightPreset}
           showEnvironment={showEnvironment}
-          onShowEnvironmentChange={setShowEnvironment}
         />
+        <div className="right-sidebar">
+          <SettingsPanel
+            environmentPreset={environmentPreset}
+            onEnvironmentChange={handleEnvironmentChange}
+            selectedLightPreset={selectedLightPreset}
+            onLightPresetChange={setSelectedLightPreset}
+            showEnvironment={showEnvironment}
+            onShowEnvironmentChange={setShowEnvironment}
+          />
+        </div>
       </div>
+      <footer>
+        <p>Powered by Three.js and React</p>
+      </footer>
     </div>
   );
 };
