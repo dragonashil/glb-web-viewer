@@ -57,8 +57,12 @@ const App: React.FC = () => {
   return (
     <div className="app">
       <header>
-        <h1>Online GLB & 3D Model Viewer</h1>
-        <p>Free browser-based 3D model viewer supporting GLB, GLTF, OBJ, FBX, STL, PLY, and DAE formats</p>
+        <h1>
+          <a href="./" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Online GLB & 3D Model Viewer
+          </a>
+        </h1>
+        <p>Free browser-based 3D model viewer supporting GLB formats</p>
       </header>
       <div className="app-content">
         <div className="left-sidebar">
@@ -89,7 +93,7 @@ const App: React.FC = () => {
         </div>
       </div>
       <footer>
-        <p>Powered by Three.js and React</p>
+        <p>2025, All rights reserved by Grant</p>
       </footer>
     </div>
   );

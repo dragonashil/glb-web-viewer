@@ -54,8 +54,8 @@ const ModelList: React.FC<ModelListProps> = ({
       <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
         <input {...getInputProps()} />
         <FontAwesomeIcon icon={faFileUpload} className="upload-icon" />
-        <p>Drop 3D models here or click to select</p>
-        <small>Supported: GLB, GLTF, OBJ, FBX, DAE, STL, PLY, USDZ, 3DS</small>
+        <p>Drop GLB models here or click to select</p>
+        <small>Future support: GLTF, OBJ, FBX, DAE, STL, PLY, USDZ, 3DS</small>
       </div>
       <div className="model-items">
         {models.map((model, index) => (
@@ -65,7 +65,7 @@ const ModelList: React.FC<ModelListProps> = ({
             onClick={() => onModelSelect(model)}
           >
             <span className="model-name">{model.name || model.url}</span>
-            <button 
+            <button
               className="delete-button"
               onClick={(e) => {
                 e.stopPropagation();
