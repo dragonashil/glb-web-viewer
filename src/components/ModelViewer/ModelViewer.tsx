@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, Html } from '@react-three/drei';
+import { OrbitControls, Environment } from '@react-three/drei';
 import { Model } from './Model';
-import { ModelInfo, LightPreset } from '../../types';
+import { ModelInfo, HierarchyNode, LightPreset, EnvironmentPreset } from '../../types';
+import { Lights } from './Lights';
 import './ModelViewer.css';
 
 interface ModelViewerProps {
   selectedModel: ModelInfo | null;
-  environmentPreset: string;
+  environmentPreset: EnvironmentPreset;
   lightPreset: LightPreset;
   showEnvironment: boolean;
 }
@@ -18,15 +19,15 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   lightPreset,
   showEnvironment
 }) => {
-  useEffect(() => {
-    if (selectedModel) {
-      console.log('Selected Model:', {
-        url: selectedModel.url,
-        type: selectedModel.type,
-        name: selectedModel.name
-      });
-    }
-  }, [selectedModel]);
+  const [modelHierarchy, setModelHierarchy] = useState<HierarchyNode | null>(null);
+
+  const handleHierarchyUpdate = (hierarchy: HierarchyNode) => {
+    setModelHierarchy(hierarchy);
+    const event = new CustomEvent('modelHierarchyUpdate', {
+      detail: hierarchy
+    });
+    window.dispatchEvent(event);
+  };
 
   const getBackgroundColor = () => {
     if (showEnvironment) return '#000';
@@ -38,47 +39,22 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
     <div className="model-viewer">
       <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
         <color attach="background" args={[getBackgroundColor()]} />
-        {selectedModel ? (
-          <>
-            <Model url={selectedModel.url} type={selectedModel.type} />
-            <OrbitControls makeDefault />
-            {showEnvironment && (
-              <Environment
-                preset={environmentPreset as any}
-                background
-                blur={0}
-                resolution={2048}
-              />
-            )}
-            <directionalLight
-              position={lightPreset.directionalLight.position}
-              intensity={lightPreset.directionalLight.intensity}
-              color={lightPreset.directionalLight.color}
-            />
-            <hemisphereLight
-              color={lightPreset.hemisphereLight.skyColor}
-              groundColor={lightPreset.hemisphereLight.groundColor}
-              intensity={lightPreset.hemisphereLight.intensity}
-            />
-            {lightPreset.spotlights.map((spotlight, index) => (
-              <spotLight
-                key={index}
-                position={spotlight.position}
-                intensity={spotlight.intensity}
-                color={spotlight.color}
-              />
-            ))}
-            <ambientLight
-              intensity={lightPreset.ambientLight.intensity}
-              color={lightPreset.ambientLight.color}
-            />
-          </>
-        ) : (
-          <Html center>
-            <div className="no-model-message">
-              No model selected
-            </div>
-          </Html>
+        <OrbitControls />
+        {showEnvironment && (
+          <Environment
+            preset={environmentPreset}
+            background
+            blur={0}
+            resolution={2048}
+          />
+        )}
+        <Lights preset={lightPreset} />
+        {selectedModel && (
+          <Model
+            url={selectedModel.url}
+            type={selectedModel.type}
+            onHierarchyUpdate={handleHierarchyUpdate}
+          />
         )}
       </Canvas>
     </div>

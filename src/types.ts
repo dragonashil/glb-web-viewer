@@ -1,3 +1,8 @@
+import { Group } from 'three';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { BufferGeometry } from 'three';
+import { Collada } from 'three/examples/jsm/loaders/ColladaLoader';
+
 export interface ModelInfo {
   url: string;
   type: string;
@@ -44,8 +49,29 @@ export interface LightPreset {
   ambientLight: AmbientLight;
 }
 
-export interface EnvironmentPreset {
+export type EnvironmentPreset =
+  | 'sunset'
+  | 'dawn'
+  | 'night'
+  | 'warehouse'
+  | 'forest'
+  | 'apartment'
+  | 'studio'
+  | 'city'
+  | 'park'
+  | 'lobby';
+
+export interface HierarchyNode {
   name: string;
-  value: string;
-  description?: string;
+  type: string;
+  children: HierarchyNode[];
+}
+
+export interface ModelLoader {
+  load: (
+    url: string,
+    onLoad: (result: GLTF | Group | Collada | BufferGeometry) => void,
+    onProgress?: (event: ProgressEvent<EventTarget>) => void,
+    onError?: (event: ErrorEvent) => void
+  ) => void;
 }

@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import ModelViewer from './components/ModelViewer/ModelViewer';
 import ModelList from './components/ModelList/ModelList';
 import SettingsPanel from './components/SettingsPanel/SettingsPanel';
-import ModelHierarchy from './components/ModelHierarchy/ModelHierarchy';
-import { ModelInfo, LightPreset } from './types';
+import { ModelHierarchy } from './components/ModelHierarchy/ModelHierarchy';
+import { ModelInfo, LightPreset, EnvironmentPreset } from './types';
 import { defaultLightPreset } from './components/SettingsPanel/LightSettings/lightPresets';
 import './styles/variables.css';
 import './App.css';
@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [models, setModels] = useState<ModelInfo[]>([]);
   const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
   const [modelHierarchy, setModelHierarchy] = useState<any>(null);
-  const [environmentPreset, setEnvironmentPreset] = useState('sunset');
+  const [environmentPreset, setEnvironmentPreset] = useState<EnvironmentPreset>('sunset' as EnvironmentPreset);
   const [selectedLightPreset, setSelectedLightPreset] = useState<LightPreset>(defaultLightPreset);
   const [showEnvironment, setShowEnvironment] = useState(true);
 
@@ -38,6 +38,10 @@ const App: React.FC = () => {
     setModels(prevModels => prevModels.filter(model => model.url !== modelToDelete.url));
     URL.revokeObjectURL(modelToDelete.url);
   }, [selectedModel]);
+
+  const handleEnvironmentChange = (preset: EnvironmentPreset) => {
+    setEnvironmentPreset(preset);
+  };
 
   useEffect(() => {
     const handleHierarchyUpdate = (event: any) => {
@@ -71,7 +75,7 @@ const App: React.FC = () => {
       <div className="right-sidebar">
         <SettingsPanel
           environmentPreset={environmentPreset}
-          onEnvironmentChange={setEnvironmentPreset}
+          onEnvironmentChange={handleEnvironmentChange}
           selectedLightPreset={selectedLightPreset}
           onLightPresetChange={setSelectedLightPreset}
           showEnvironment={showEnvironment}

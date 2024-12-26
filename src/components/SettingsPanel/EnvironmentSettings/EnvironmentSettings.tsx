@@ -1,17 +1,13 @@
 import React from 'react';
+import { EnvironmentPreset } from '../../../types';
 import './EnvironmentSettings.css';
 
 interface EnvironmentSettingsProps {
-  selectedPreset: string;
-  onPresetChange: (preset: string) => void;
+  selectedPreset: EnvironmentPreset;
+  onPresetChange: (preset: EnvironmentPreset) => void;
 }
 
-interface EnvironmentPreset {
-  name: string;
-  description: string;
-}
-
-const environmentPresets: EnvironmentPreset[] = [
+const environmentPresets: { name: EnvironmentPreset; description: string }[] = [
   { name: 'sunset', description: 'Warm evening lighting with orange and purple hues' },
   { name: 'dawn', description: 'Soft morning light with gentle blue tones' },
   { name: 'warehouse', description: 'Industrial indoor lighting with ambient occlusion' },
@@ -24,7 +20,7 @@ const environmentPresets: EnvironmentPreset[] = [
   { name: 'night', description: 'Dark environment with moonlight and stars' }
 ];
 
-const EnvironmentSettings: React.FC<EnvironmentSettingsProps> = ({
+export const EnvironmentSettings: React.FC<EnvironmentSettingsProps> = ({
   selectedPreset,
   onPresetChange
 }) => {

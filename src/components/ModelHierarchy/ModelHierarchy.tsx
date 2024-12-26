@@ -43,7 +43,7 @@ const HierarchyItem: React.FC<{ node: HierarchyNode; depth: number }> = ({ node,
   );
 };
 
-const ModelHierarchy: React.FC<ModelHierarchyProps> = ({ hierarchy }) => {
+export const ModelHierarchy = ({ hierarchy }: ModelHierarchyProps) => {
   if (!hierarchy) {
     return (
       <div className="model-hierarchy">
@@ -65,5 +65,3 @@ const ModelHierarchy: React.FC<ModelHierarchyProps> = ({ hierarchy }) => {
     </div>
   );
 };
-
-export default ModelHierarchy;
