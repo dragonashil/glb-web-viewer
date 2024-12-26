@@ -27,7 +27,7 @@
 }
 
 .hierarchy-content {
-  max-height: 300px;
+  max-height: 600px;
   overflow-y: auto;
 }
 
