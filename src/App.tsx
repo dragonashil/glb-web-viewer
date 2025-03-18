@@ -34,6 +34,7 @@ const App: React.FC = () => {
   const handleModelDelete = useCallback((modelToDelete: ModelInfo) => {
     if (selectedModel?.url === modelToDelete.url) {
       setSelectedModel(null);
+      setModelHierarchy(null);
     }
     setModels(prevModels => prevModels.filter(model => model.url !== modelToDelete.url));
     URL.revokeObjectURL(modelToDelete.url);
@@ -46,6 +47,8 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleHierarchyUpdate = (event: any) => {
       setModelHierarchy(event.detail);
+      
+      console.log('모델 계층 구조 업데이트:', event.detail ? '있음' : '없음');
     };
 
     window.addEventListener('modelHierarchyUpdate', handleHierarchyUpdate);

@@ -54,8 +54,8 @@ const ModelList: React.FC<ModelListProps> = ({
       <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
         <input {...getInputProps()} />
         <FontAwesomeIcon icon={faFileUpload} className="upload-icon" />
-        <p>Drop GLB models here or click to select</p>
-        <small>Future support: GLTF, OBJ, FBX, DAE, STL, PLY, USDZ, 3DS</small>
+        <p>Drop GLB, STL files here or click to select</p>
+        <small>Future support: GLTF, OBJ, FBX, DAE, PLY, USDZ, 3DS</small>
       </div>
       <div className="model-items">
         {models.map((model, index) => (

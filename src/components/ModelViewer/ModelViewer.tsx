@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { Model } from './Model';
+import { STLModel } from './STLModel';
 import { ModelInfo, HierarchyNode, LightPreset, EnvironmentPreset } from '../../types';
 import { Lights } from './Lights';
 import './ModelViewer.css';
@@ -19,7 +20,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   lightPreset,
   showEnvironment
 }) => {
-  const [modelHierarchy, setModelHierarchy] = useState<HierarchyNode | null>(null);
+  const [, setModelHierarchy] = useState<HierarchyNode | null>(null);
 
   const handleHierarchyUpdate = (hierarchy: HierarchyNode) => {
     setModelHierarchy(hierarchy);
@@ -28,6 +29,18 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
     });
     window.dispatchEvent(event);
   };
+
+  // 선택된 모델이 없을 때 하이라키 정보 초기화
+  useEffect(() => {
+    if (!selectedModel) {
+      setModelHierarchy(null);
+      // 하이라키 초기화 이벤트 발송
+      const event = new CustomEvent('modelHierarchyUpdate', {
+        detail: null
+      });
+      window.dispatchEvent(event);
+    }
+  }, [selectedModel]);
 
   const getBackgroundColor = () => {
     if (showEnvironment) return '#000';
@@ -70,11 +83,20 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
         )}
         <Lights preset={lightPreset} />
         {selectedModel && (
-          <Model
-            url={selectedModel.url}
-            type={selectedModel.type}
-            onHierarchyUpdate={handleHierarchyUpdate}
-          />
+          selectedModel.type.toLowerCase() === 'stl' ? (
+            <STLModel
+              key={`stl-${selectedModel.url}`}
+              url={selectedModel.url}
+              onHierarchyUpdate={handleHierarchyUpdate}
+            />
+          ) : (
+            <Model
+              key={`model-${selectedModel.url}-${selectedModel.type}`}
+              url={selectedModel.url}
+              type={selectedModel.type}
+              onHierarchyUpdate={handleHierarchyUpdate}
+            />
+          )
         )}
       </Canvas>
     </div>

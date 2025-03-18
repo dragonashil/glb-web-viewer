@@ -1,0 +1,4 @@
+# project-info.txt (gitignore에 추가)
+AWS Console: https://864899851414.signin.aws.amazon.com/console
+S3 Bucket: glbviewer-web
+Profile: super-iam

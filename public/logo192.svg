@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 3D 큐브 모양의 아이콘 (192x192) -->
+  <rect width="192" height="192" rx="24" fill="#2C3E50" />
+  
+  <!-- 큐브의 윗면 -->
+  <path d="M96 36L156 72V120L96 156L36 120V72L96 36Z" fill="#3498DB" />
+  
+  <!-- 큐브의 오른쪽 면 -->
+  <path d="M96 156L156 120V72L96 108V156Z" fill="#2980B9" />
+  
+  <!-- 큐브의 왼쪽 면 -->
+  <path d="M96 156L36 120V72L96 108V156Z" fill="#1ABC9C" />
+  
+  <!-- 큐브의 가장자리 선 -->
+  <path d="M96 36L156 72L96 108L36 72L96 36Z" stroke="#ECF0F1" stroke-width="3" fill="#3498DB" />
+  <path d="M96 108L156 72M96 108L96 156M96 108L36 72" stroke="#ECF0F1" stroke-width="3" />
+</svg> 
